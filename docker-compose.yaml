@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: docker
+      dockerfile: nginx/Dockerfile
+    volumes:
+      - ./api:/app
+    ports:
+      - "8081:80"
+    depends_on:
+      - api-php-fpm
+
+  api-php-fpm:
+    build:
+      context: docker
+      dockerfile: php-fpm/Dockerfile
+    volumes:
+      - ./api:/app
