@@ -17,4 +17,10 @@ RUN apt-get update -y && apt-get upgrade -y && apt-get install -y \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet \
     && rm -rf /root/.composer/cache
 
+# Create a non-root user named "appuser" and set its default shell to /bin/bash
+RUN useradd -ms /bin/bash appuser
+
+# Switch to the "appuser" user for subsequent commands
+USER appuser
+
 WORKDIR /home/app
