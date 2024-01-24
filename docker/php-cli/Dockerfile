@@ -1,26 +1,16 @@
-FROM php:8.2-cli
+FROM php:8.2-cli-alpine
 
-RUN apt-get update -y && apt-get upgrade -y && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    libpq-dev \
-    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install zip pdo pdo_pgsql \
-    && rm -rf /var/lib/apt/lists/*
+# Install required packages and extensions
+RUN apk add --no-cache libpq postgresql-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet \
-    && rm -rf /root/.composer/cache
+# Install Composer globally
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');"
 
-# Create a non-root user named "appuser" and set its default shell to /bin/bash
-RUN useradd -ms /bin/bash appuser
+# Set the working directory
+WORKDIR /var/www
 
-# Switch to the "appuser" user for subsequent commands
-USER appuser
-
-WORKDIR /home/app
+# Start the cron service in the background
+CMD ["crond", "-f"]

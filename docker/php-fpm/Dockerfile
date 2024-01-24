@@ -1,20 +1,28 @@
-FROM php:8.2-fpm
+FROM php:8.2.0-fpm-alpine
 
-ARG UID
-ARG GID
+# Install packages
+RUN apk add --no-cache curl git build-base zlib-dev oniguruma-dev autoconf bash && \
+    echo "memory_limit=512M" >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini && \
+    echo 'max_execution_time = 300' >> /usr/local/etc/php/conf.d/docker-php-maxexectime.ini;
 
-RUN apt-get update -y && apt-get upgrade -y && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    libpq-dev \
-    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install zip pdo pdo_pgsql \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache libpq postgresql-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 
-WORKDIR /home/app
+# Configure non-root user.
+ARG PUID=1000
+ARG PGID=1000
+
+RUN apk --no-cache add shadow && \
+    groupmod -o -g ${PGID} www-data && \
+    usermod -o -u ${PUID} -g www-data www-data
+
+# Source code
+RUN chown www-data:www-data /var/www
+COPY --chown=www-data:www-data ./ /var/www
+WORKDIR /var/www
+
+USER www-data
+
+CMD ["sh", "-c", "docker-php-entrypoint php-fpm"]
+
+EXPOSE 9000

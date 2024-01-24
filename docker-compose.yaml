@@ -5,8 +5,6 @@ services:
     build:
       context: docker
       dockerfile: nginx/Dockerfile
-    volumes:
-      - ./api:/home/app
     ports:
       - "8081:80"
     depends_on:
@@ -19,7 +17,8 @@ services:
       context: docker
       dockerfile: php-fpm/Dockerfile
     volumes:
-      - ./api:/home/app
+      - ./api:/var/www/api
+    working_dir: /var/www/api
     networks:
       - mynetwork
 
@@ -30,7 +29,8 @@ services:
     tty: true
     restart: always
     volumes:
-      - ./api:/home/app
+      - ./api:/var/www/api
+    working_dir: /var/www/api
     networks:
       - mynetwork
 
