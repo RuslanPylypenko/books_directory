@@ -23,6 +23,4 @@ WORKDIR /var/www
 
 USER www-data
 
-CMD ["sh", "-c", "docker-php-entrypoint php-fpm"]
-
 EXPOSE 9000

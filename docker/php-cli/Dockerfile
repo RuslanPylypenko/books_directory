@@ -11,6 +11,3 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 # Set the working directory
 WORKDIR /var/www
-
-# Start the cron service in the background
-CMD ["crond", "-f"]
