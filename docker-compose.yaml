@@ -11,6 +11,8 @@ services:
       - "8081:80"
     depends_on:
       - api-php-fpm
+    networks:
+      - mynetwork
 
   api-php-fpm:
     build:
@@ -18,6 +20,8 @@ services:
       dockerfile: php-fpm/Dockerfile
     volumes:
       - ./api:/home/app
+    networks:
+      - mynetwork
 
   api-php-cli:
     build:
@@ -27,6 +31,8 @@ services:
     restart: always
     volumes:
       - ./api:/home/app
+    networks:
+      - mynetwork
 
   database:
     image: postgres:16
@@ -39,6 +45,12 @@ services:
       POSTGRES_DB: app
     ports:
       - "54321:5432"
+    networks:
+      - mynetwork
 
 volumes:
   postgres:
+
+networks:
+  mynetwork:
+    driver: bridge

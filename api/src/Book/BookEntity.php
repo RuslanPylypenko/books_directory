@@ -4,16 +4,38 @@ namespace App\Book;
 
 use App\Author\AuthorEntity;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping;
 
+#[Mapping\Entity(repositoryClass: BookRepository::class)]
+#[Mapping\Table(name: 'book')]
+#[Mapping\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
 class BookEntity
 {
+    #[Mapping\Id]
+    #[Mapping\Column(type: Types::INTEGER, options: ['unsigned' => true])]
+    #[Mapping\GeneratedValue]
+    private ?int $id = null;
+
+    #[Mapping\Column(name: 'name', type: Types::STRING, length: 255)]
     private string $name;
+
+    #[Mapping\Column(name: 'short_description', type: Types::STRING, length: 255)]
     private ?string $shortDescription = null;
+
+    #[Mapping\Column(name: 'image', type: Types::STRING, length: 255)]
     private string $image;
+
+    #[Mapping\Column(name: 'publish_date', type: Types::STRING, length: 255)]
     private DateTime $publishDate;
 
-    /** @var AuthorEntity[] */
-    private array $authors;
+    #[Mapping\JoinTable(name: 'book_author')]
+    #[Mapping\JoinColumn(name: 'book_id', referencedColumnName: 'id')]
+    #[Mapping\InverseJoinColumn(name: 'author_id', referencedColumnName: 'id')]
+    #[Mapping\ManyToMany(targetEntity: AuthorEntity::class)]
+    private Collection $authors;
 
     /**
      * @param AuthorEntity[] $authors
@@ -29,7 +51,7 @@ class BookEntity
         $this->image = $image;
         $this->publishDate = $publishDate;
         $this->shortDescription = $shortDescription;
-        $this->authors = $authors;
+        $this->authors = new ArrayCollection($authors);
     }
 
     public function getName(): string
@@ -53,10 +75,11 @@ class BookEntity
     }
 
     /**
-     * @return AuthorEntity[]
+     * @return Collection<AuthorEntity>
      */
-    public function getAuthors(): array
+    public function getAuthors(): Collection
     {
         return $this->authors;
     }
+
 }
