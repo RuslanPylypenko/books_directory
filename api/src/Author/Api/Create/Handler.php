@@ -19,7 +19,7 @@ class Handler extends AbstractController
     }
 
     #[Route('/authors', methods: ['POST'])]
-    public function handle(CreateRequest $request): Response
+    public function handle(Request $request): Response
     {
         $author = new AuthorEntity(
             $request->name,

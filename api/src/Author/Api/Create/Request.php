@@ -7,7 +7,7 @@ namespace App\Author\Api\Create;
 use App\Api\InputInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateRequest implements InputInterface
+class Request implements InputInterface
 {
     #[Assert\NotBlank, Assert\Length(min: 1, max: 255)]
     public string $name;

@@ -9,8 +9,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class AuthorRepository extends EntityRepository
 {
-    public function getAll(): array
-    {
-        return $this->findAll();
-    }
+    private const DEFAULT_PER_PAGE = 12;
+
 }
