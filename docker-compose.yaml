@@ -18,9 +18,11 @@ services:
       dockerfile: php-fpm/Dockerfile
     volumes:
       - ./api:/var/www/api
-    working_dir: /var/www/api
     networks:
       - mynetwork
+    depends_on:
+      - storage
+      - database
 
   api-php-cli:
     build:
@@ -30,9 +32,11 @@ services:
     restart: always
     volumes:
       - ./api:/var/www/api
-    working_dir: /var/www/api
     networks:
       - mynetwork
+    depends_on:
+      - storage
+      - database
 
   database:
     image: postgres:16
@@ -45,6 +49,25 @@ services:
       POSTGRES_DB: app
     ports:
       - "54321:5432"
+    networks:
+      - mynetwork
+
+  storage:
+    build:
+      context: ./docker/storage
+    volumes:
+      - ./storage:/app
+    ports:
+      - "8083:80"
+
+  storage-ftp:
+    image: stilliard/pure-ftpd
+    environment:
+      FTP_USER_NAME: app
+      FTP_USER_PASS: secret
+      FTP_USER_HOME: /app
+    volumes:
+      - ./storage/public:/app
     networks:
       - mynetwork
 

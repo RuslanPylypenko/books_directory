@@ -22,13 +22,13 @@ class BookEntity
     #[Mapping\Column(name: 'name', type: Types::STRING, length: 255)]
     private string $name;
 
-    #[Mapping\Column(name: 'short_description', type: Types::STRING, length: 255)]
-    private ?string $shortDescription = null;
+    #[Mapping\Column(name: 'short_description', type: Types::TEXT, length: 900, nullable: true)]
+    private ?string $shortDescription;
 
     #[Mapping\Column(name: 'image', type: Types::STRING, length: 255)]
     private string $image;
 
-    #[Mapping\Column(name: 'publish_date', type: Types::STRING, length: 255)]
+    #[Mapping\Column(name: 'publish_date', type: Types::DATETIME_MUTABLE, length: 255)]
     private DateTime $publishDate;
 
     #[Mapping\JoinTable(name: 'book_author')]
