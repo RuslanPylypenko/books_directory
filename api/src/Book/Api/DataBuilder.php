@@ -28,6 +28,7 @@ class DataBuilder
     public function book(BookEntity $book): array
     {
         return [
+            'id'                => $book->getId(),
             'name'              => $book->getName(),
             'short_description' => $book->getShortDescription(),
             'authors'           => $this->authorDataBuilder->authors($book->getAuthors()->toArray()),

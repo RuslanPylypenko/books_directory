@@ -56,9 +56,19 @@ class BookEntity
         $this->authors = new ArrayCollection($authors);
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
     public function getShortDescription(): ?string
@@ -66,14 +76,29 @@ class BookEntity
         return $this->shortDescription;
     }
 
+    public function setShortDescription(?string $shortDescription): void
+    {
+        $this->shortDescription = $shortDescription;
+    }
+
     public function getImage(): string
     {
         return $this->image;
     }
 
+    public function setImage(string $image): void
+    {
+        $this->image = $image;
+    }
+
     public function getPublishDate(): DateTime
     {
         return $this->publishDate;
+    }
+
+    public function setPublishDate(DateTime $publishDate): void
+    {
+        $this->publishDate = $publishDate;
     }
 
     /**
@@ -84,4 +109,8 @@ class BookEntity
         return $this->authors;
     }
 
+    public function setAuthors(array $authors): void
+    {
+        $this->authors = new ArrayCollection($authors);
+    }
 }
