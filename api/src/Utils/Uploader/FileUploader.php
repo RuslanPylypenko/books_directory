@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Utils\Uploader;
 
+use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -13,6 +16,9 @@ class FileUploader
     ) {
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function upload(UploadedFile $file, string $path): File
     {
         $name = Uuid::uuid4()->toString() . '.' . $file->getClientOriginalExtension();

@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Book;
 
 use App\Utils\Uploader\File;
 use App\Utils\Uploader\FileUploader;
+use League\Flysystem\FilesystemException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageUploader
@@ -15,6 +18,9 @@ class ImageUploader
     ) {
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function upload(UploadedFile $file): File
     {
         return $this->fileUploader->upload($file, self::IMAGE_DIR);
