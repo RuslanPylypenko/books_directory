@@ -1,7 +1,10 @@
 FROM php:8.2-cli-alpine
 
-RUN apk add --no-cache libpq postgresql-dev \
+RUN apk add --no-cache libpq postgresql-dev bash \
     && docker-php-ext-install pdo pdo_pgsql ftp
+
+COPY ./common/wait-for-it.sh /usr/local/bin/wait-for-it
+RUN chmod 555 /usr/local/bin/wait-for-it
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \

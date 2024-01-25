@@ -65,7 +65,8 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "app": "php bin/console --ansi"
     },
     "conflict": {
         "symfony/symfony": "*"
