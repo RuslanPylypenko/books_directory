@@ -7,7 +7,6 @@ namespace App\Author\Api\Create;
 use App\Author\AuthorEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,7 +18,7 @@ class Handler extends AbstractController
     }
 
     #[Route('/authors', methods: ['POST'])]
-    public function handle(Request $request): Response
+    public function handle(CreateRequest $request): Response
     {
         $author = new AuthorEntity(
             $request->name,
@@ -30,6 +29,6 @@ class Handler extends AbstractController
         $this->em->persist($author);
         $this->em->flush();
 
-        return $this->json([]);
+        return $this->json([], Response::HTTP_CREATED);
     }
 }
