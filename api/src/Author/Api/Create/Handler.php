@@ -1,10 +1,15 @@
 <?php
 
-namespace App\Author\Command\Create;
+declare(strict_types=1);
+
+namespace App\Author\Api\Create;
 
 use App\Author\AuthorEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class Handler extends AbstractController
 {
@@ -13,16 +18,18 @@ class Handler extends AbstractController
     ) {
     }
 
-    #[Route('/ebay/product/find/', methods: ['POST'])]
-    public function handle(Command $command): void
+    #[Route('/authors', methods: ['POST'])]
+    public function handle(CreateRequest $request): Response
     {
         $author = new AuthorEntity(
-            $command->name,
-            $command->surname,
-            $command->patronymic,
+            $request->name,
+            $request->surname,
+            $request->patronymic,
         );
 
         $this->em->persist($author);
         $this->em->flush();
+
+        return $this->json([]);
     }
 }
