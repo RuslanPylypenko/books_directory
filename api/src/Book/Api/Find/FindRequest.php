@@ -7,7 +7,7 @@ namespace App\Book\Api\Find;
 use App\Api\InputInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class Request implements InputInterface
+class FindRequest implements InputInterface
 {
     #[Assert\NotBlank(allowNull: true)]
     public ?string $search = null;

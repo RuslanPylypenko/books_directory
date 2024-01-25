@@ -25,7 +25,7 @@ class Handler extends AbstractController
         #[MapQueryParameter(name: 'page')] int $page = 1,
     ): Response
     {
-        $repository = $this->repositoryFactory->create($page, self::PER_PAGE);
+        $repository = $this->repositoryFactory->fromInput($page, self::PER_PAGE);
 
         return $this->json([
             'list'  => $this->dataBuilder->authors($repository->result()),

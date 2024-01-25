@@ -15,7 +15,7 @@ class RepositoryFactory
     ) {
     }
 
-    public function create(int $page, int $limit): Repository
+    public function fromInput(int $page, int $limit): Repository
     {
         $qb = $this->em->getRepository(AuthorEntity::class)->createQueryBuilder('a');
         return (new Repository($qb))

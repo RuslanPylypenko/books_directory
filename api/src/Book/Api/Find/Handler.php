@@ -23,9 +23,10 @@ class Handler extends AbstractController
     #[Route('/books', methods: ['GET'])]
     public function handle(
         #[MapQueryParameter(name: 'page')] int $page = 1,
+        #[MapQueryParameter(name: 'author_surname')] ?string $author = null,
     ): Response
     {
-        $repository = $this->repositoryFactory->create($page, self::PER_PAGE);
+        $repository = $this->repositoryFactory->fromInput($page, self::PER_PAGE, $author);
 
         return $this->json([
             'list'  => $this->dataBuilder->books($repository->result()),
